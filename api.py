@@ -9,6 +9,10 @@ import os
 import io
 from PIL import Image
 import uvicorn
+import tensorflow as tf
+
+# Afficher la version de TensorFlow
+print(f"🔧 TensorFlow version: {tf.__version__}")
 
 app = FastAPI(
     title="API Prédiction Minéraux",
