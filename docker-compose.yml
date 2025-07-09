@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      # Optionnel: monter les modèles depuis l'hôte
+      - ./model_final_durete_densiter.h5:/app/model_final_durete_densiter.h5
+      - ./scaler.pkl:/app/scaler.pkl
+      - ./label_encoder.pkl:/app/label_encoder.pkl
+      - ./data_test.csv:/app/data_test.csv
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped 
