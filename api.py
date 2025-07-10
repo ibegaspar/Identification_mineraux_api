@@ -10,6 +10,7 @@ import io
 from PIL import Image
 import uvicorn
 import tensorflow as tf
+import pandas as pd
 
 # Afficher la version de TensorFlow
 print(f"🔧 TensorFlow version: {tf.__version__}")
@@ -105,8 +106,8 @@ async def predict_mineral(
         # Prétraitement
         img = preprocess_image(image_bytes)
         X_img = np.expand_dims(img, axis=0)
-        X_tab = scaler.transform([[durete, densite]])
-        
+        # Utiliser un DataFrame avec noms de colonnes pour scaler
+        X_tab = scaler.transform(pd.DataFrame([[durete, densite]], columns=pd.Index(['durete', 'densite'])))
         # Prédiction
         prediction = model.predict([X_img, X_tab], verbose=0)
         predicted_index = np.argmax(prediction)
