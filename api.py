@@ -15,6 +15,16 @@ import pandas as pd
 # Afficher la version de TensorFlow
 print(f"🔧 TensorFlow version: {tf.__version__}")
 
+# Cela ne pose aucun problème, même si Render n’a pas de GPU :  
+# - Ça **supprime les tentatives d’initialisation CUDA** (et donc certains warnings).
+# - Ça **n’impacte pas les performances** (Render n’a pas de GPU de toute façon).
+
+# C’est une bonne pratique pour avoir des logs plus propres et éviter toute tentative d’utilisation GPU.
+
+# Veux-tu que je l’ajoute automatiquement en haut de ton fichier `api.py` ?
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 app = FastAPI(
     title="API Prédiction Minéraux",
     description="API pour identifier les minéraux à partir d'images et propriétés physiques",
