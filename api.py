@@ -148,25 +148,28 @@ async def predict_mineral_simple(
         raise HTTPException(status_code=400, detail="Densité doit être entre 0 et 20")
     
     try:
-        # Prédiction basée sur les propriétés physiques
-        if durete >= 7 and densite >= 3.5:
-            predicted_mineral = "Diamant"
-            confidence = 95.0
-        elif durete >= 6 and densite >= 2.6:
-            predicted_mineral = "Quartz"
-            confidence = 88.0
-        elif durete >= 5 and densite >= 2.5:
-            predicted_mineral = "Feldspath"
-            confidence = 85.0
-        elif durete >= 4 and densite >= 2.2:
-            predicted_mineral = "Calcite"
-            confidence = 82.0
-        elif durete >= 3 and densite >= 2.0:
-            predicted_mineral = "Gypse"
-            confidence = 78.0
-        else:
-            predicted_mineral = "Minéral commun"
-            confidence = 70.0
+        # Liste des minéraux avec leurs plages de dureté et densité
+        minerals = [
+            {"name": "azurite", "durete_min": 3.5, "durete_max": 4.0, "densite_min": 3.77, "densite_max": 3.77},
+            {"name": "copper", "durete_min": 2.5, "durete_max": 3.0, "densite_min": 8.9, "densite_max": 8.9},
+            {"name": "galena", "durete_min": 2.5, "durete_max": 2.5, "densite_min": 7.6, "densite_max": 7.6},
+            {"name": "gold", "durete_min": 2.5, "durete_max": 3.0, "densite_min": 15.0, "densite_max": 19.3},
+            {"name": "hematite", "durete_min": 5.0, "durete_max": 6.0, "densite_min": 5.26, "densite_max": 5.26},
+            {"name": "limonite", "durete_min": 4.0, "durete_max": 5.5, "densite_min": 2.7, "densite_max": 4.3},
+            {"name": "magnetite", "durete_min": 5.5, "durete_max": 6.5, "densite_min": 5.175, "densite_max": 5.175},
+            {"name": "opal", "durete_min": 5.5, "durete_max": 6.5, "densite_min": 1.9, "densite_max": 2.3},
+            {"name": "pyrit", "durete_min": 6.0, "durete_max": 6.5, "densite_min": 4.8, "densite_max": 5.0},
+            {"name": "quartz", "durete_min": 7.0, "durete_max": 7.0, "densite_min": 2.6, "densite_max": 2.6},
+            {"name": "saphir", "durete_min": 9.0, "durete_max": 9.0, "densite_min": 3.98, "densite_max": 4.06},
+            {"name": "schwefel", "durete_min": 1.5, "durete_max": 2.5, "densite_min": 2.07, "densite_max": 2.07},
+        ]
+        predicted_mineral = "Minéral commun"
+        confidence = 70.0
+        for mineral in minerals:
+            if mineral["durete_min"] <= durete <= mineral["durete_max"] and mineral["densite_min"] <= densite <= mineral["densite_max"]:
+                predicted_mineral = mineral["name"]
+                confidence = 90.0
+                break
         
         return {
             "success": True,
